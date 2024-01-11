@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  prometheus:
+    image: mafumaful/prometheus:melodic
+    build: 
+      context: ./docker
+      dockerfile: ./prometheus/Dockerfile
+      cache_from:
+        - mafumaful/prometheus:melodic
+    environment:
+      - DISPLAY = ${DISPLAY}
+      - NVIDIA_DRIVER_CAPABILITIES = all
+      - NVIDIA_VISIBLE_DEVICES = all
+      - XAUTHORITY = ${XAUTHORITY}
+      - SDL_VIDEODRIVER=x11
+      - LIBGL_ALWAYS_INDIRECT=1
+    volumes:
+      - "/tmp/.X11-unix:/tmp/.X11-unix" # mount the X11 socket
+    runtime: nvidia
+    privileged: true
+    tty: true
